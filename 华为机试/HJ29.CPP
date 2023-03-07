@@ -1,54 +1,84 @@
-#include <iostream>
-#include<vector>
+#include<iostream>
+#include<string>
 using namespace std;
-bool isprime(int num) {
-    for (int i = 2; i * i <= num; i++) {
-        if (num % i == 0) {
-            return false;
-        }
-    }
-    return true;
-}
-bool find(int num, vector<int>& evens, vector<bool>& used, vector<int>& match) {
-    for (int i = 0; i < evens.size(); i++) {
-        if (isprime(num + evens[i]) && !used[i]) {
-            used[i] = true;
-            if (match[i] == 0 || find(match[i], evens, used, match))
-            {
-                match[i] = num;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-int main() {
-    vector<int> v1;
-    vector<int> v2;
-    int n;
-    while (cin >> n) {
-        if (n % 2 == 0) {
-            v2.push_back(n);
-        }
-        else {
-            v1.push_back(n);
-        }
-    }
-    int count = 0;
-    if (v1.empty() || v2.empty()) {
-        cout << count << endl;
-        exit(0);
-    }
-    vector<int> match(v2.size(), 0);
-    for (int i = 0; i < v1.size(); i++) {
-        vector<bool> used(v2.size(), false);
-        if (find(v1[i], v2, used, match))
+ 
+void JiaMi(string str)
+{
+    int length = str.length();
+    for(int i=0; i<length; i++)
+    {
+        //小写字母
+        if(str[i]-'a'>=0 &&str[i]-'z'<0)
         {
-            count++;
+            str[i] -= 31;
+        }
+        else if(str[i] == 'z')
+        {
+            str[i] = 'A';
+        }
+        //大写字符
+        else if(str[i]-'A'>=0 &&str[i]-'Z'<0)
+        {
+            str[i] += 33;
+        }
+        else if(str[i] == 'Z')
+        {
+            str[i] = 'a';
+        }
+        //数字
+        else if(str[i]-'0'>=0 &&str[i]-'9'<0)
+        {
+            str[i] += 1;
+        }
+        else if(str[i] == '9')
+        {
+            str[i] = '0';
         }
     }
-    cout << count << endl;
+    cout<<str<<endl;
+}
+void JieMi(string str)
+{
+    int length = str.length();
+    for(int i=0; i<length; i++)
+    {
+        //小写字母
+        if(str[i]-'a'>0 &&str[i]-'z'<=0)
+        {
+            str[i] -= 33;
+        }
+        else if(str[i] == 'a')
+        {
+            str[i] = 'Z';
+        }
+        //大写字符
+        else if(str[i]-'A'>0 &&str[i]-'Z'<=0)
+        {
+            str[i] += 31;
+        }
+        else if(str[i] == 'A')
+        {
+            str[i] = 'z';
+        }
+        //数字
+        else if(str[i]-'0'>0 &&str[i]-'9'<=0)
+        {
+            str[i] -= 1;
+        }
+        else if(str[i] == '0')
+        {
+            str[i] = '9';
+        }
+    }
+    cout<<str<<endl;
+}
+int main()
+{
+    string str1, str2;
+    while(cin>>str1>>str2)
+    {
+        JiaMi(str1);
+        JieMi(str2);
+    }
     return 0;
 }
-// 64 位输出请用 printf("%lld")

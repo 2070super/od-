@@ -1,84 +1,83 @@
-#include<iostream>
+#include <iostream>
 #include<string>
+#include<vector>
+#include<math.h>
+#include<algorithm>
 using namespace std;
- 
-void JiaMi(string str)
+char& change(char& c)
 {
-    int length = str.length();
-    for(int i=0; i<length; i++)
+    string s = "0123456789ABCDEF";
+    if (c >= 'a' && c <= 'z')
     {
-        //小写字母
-        if(str[i]-'a'>=0 &&str[i]-'z'<0)
-        {
-            str[i] -= 31;
-        }
-        else if(str[i] == 'z')
-        {
-            str[i] = 'A';
-        }
-        //大写字符
-        else if(str[i]-'A'>=0 &&str[i]-'Z'<0)
-        {
-            str[i] += 33;
-        }
-        else if(str[i] == 'Z')
-        {
-            str[i] = 'a';
-        }
-        //数字
-        else if(str[i]-'0'>=0 &&str[i]-'9'<0)
-        {
-            str[i] += 1;
-        }
-        else if(str[i] == '9')
-        {
-            str[i] = '0';
-        }
+        c = c - 'a' + 'A';
     }
-    cout<<str<<endl;
-}
-void JieMi(string str)
-{
-    int length = str.length();
-    for(int i=0; i<length; i++)
+    int local = s.find(c);
+    vector<int>v;
+    while (local != 0)
     {
-        //小写字母
-        if(str[i]-'a'>0 &&str[i]-'z'<=0)
-        {
-            str[i] -= 33;
-        }
-        else if(str[i] == 'a')
-        {
-            str[i] = 'Z';
-        }
-        //大写字符
-        else if(str[i]-'A'>0 &&str[i]-'Z'<=0)
-        {
-            str[i] += 31;
-        }
-        else if(str[i] == 'A')
-        {
-            str[i] = 'z';
-        }
-        //数字
-        else if(str[i]-'0'>0 &&str[i]-'9'<=0)
-        {
-            str[i] -= 1;
-        }
-        else if(str[i] == '0')
-        {
-            str[i] = '9';
-        }
+        v.push_back(local % 2);
+        local /= 2;
     }
-    cout<<str<<endl;
+    int n = 0;
+    for (int i = 0; i < v.size(); i++)
+    {
+        int num = 4 - 1 - i;
+        n += v[i] * pow(2, num);
+    }
+    c= s[n];
+    return c;
 }
 int main()
 {
+    string s, str;
+    cin >> s;
+    cin >> str;
+    s += str;
     string str1, str2;
-    while(cin>>str1>>str2)
+    for (int i = 0; i < s.size(); i++)
     {
-        JiaMi(str1);
-        JieMi(str2);
+        if (i % 2 == 0)
+        {
+            str2.push_back(s[i]);
+        }
+        else
+        {
+            str1.push_back(s[i]);
+        }
     }
-    return 0;
+    sort(str2.begin(), str2.end());
+    sort(str1.begin(), str1.end());
+    string s3;
+    auto it1 = str1.begin();
+    auto it2 = str2.begin();
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (i % 2 == 0)
+        {
+            s3.push_back(*it2);
+            it2++;
+        }
+        else
+        {
+            s3.push_back(*it1);
+            it1++;
+        }
+    }
+    string s1;
+    for (int i = 0; i < s3.size(); i++)
+    {
+        if (!(s3[i] >= '0' && s3[i] <= '9') && !(s3[i] >= 'a' && s3[i] <= 'f') && !(s3[i] >= 'A' && s3[i] <= 'F'))
+        {
+            s1.push_back(s3[i]);
+            continue;
+        }
+        else
+        {
+            s1.push_back(change(s3[i]));
+        }
+    }
+    for (int i = 0; i < s1.size(); i++)
+    {
+        cout << s1[i];
+    }
 }
